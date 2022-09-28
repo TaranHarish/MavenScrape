@@ -14,19 +14,20 @@ url = "https://libraries.io/search?order=desc&platforms=Maven&sort=rank"
 html = urlopen(url)
 soup = BeautifulSoup(html, "html.parser")
 
-response = requests.get(url)
-web_page = response.text
-soup = BeautifulSoup(web_page, "html.parser")
 site_title = soup.title.string
 print(f"\nFrom {site_title}\n")
 
-for i in web_page:
-    results = soup.findAll(class_="project")
-    button = webdriver.find_element_by_class_name("project")
-    button.click()
+projects = soup.findAll(class_="project")
+for project in projects:
+    soup.findAll('a')
+    name = project.text
 
-# name variable that identifies the name
-# link variable that contains link to the webpage
-# number of rows
-table = pd.DataFrame(#columns=name,link.number)
-print(table)
+maven = []
+
+for link in soup.findAll("a"):
+    temp = link.get("href")
+    if temp[0:6] == "/maven":
+        maven.append(temp)
+
+df = pd.DataFrame({'Name': [name]})
+print(df)
