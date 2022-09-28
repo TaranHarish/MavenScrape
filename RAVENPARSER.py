@@ -29,7 +29,6 @@ while True:
         url = urljoin(url, next_url)
     else:
         break
-
-data = {'link': [links]}
+data = {'link': [links], 'names': [name]}
 df = pd.DataFrame(data)
 print(df)
