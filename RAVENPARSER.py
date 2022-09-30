@@ -16,23 +16,20 @@ soup = BeautifulSoup(html, "html.parser")
 
 site_title = soup.title.string
 print(f"\nFrom {site_title}\n")
+links = []
+names = []
 
-projects = soup.findAll(class_="project")
+for page in range(1, 300):
+    time.sleep(1)
+    url = f'https://libraries.io/search?order=desc&page={page}&platforms=Maven&sort=rank'
+    html = urlopen(url)
+    soup = BeautifulSoup(html, "html.parser")
+    print(url)
+    for link in soup.select('div.project a[href]'):
+        links.append(link['href'])
+        name = link.getText()
+        names.append(name)
 
-
-while True:
-    for page in range(1, 300):
-        url = f'https://libraries.io/search?order=desc&page={page}&platforms=Maven&sort=rank'
-        for project in projects:
-            for link in soup.select('div.project a[href]'):
-                links = (link['href'])
-                print(links)
-        soup = [a.getText() for a in BeautifulSoup(requests.get(url).text, "lxml").select("div.project > h5 > a")]
-        name = ("\n".join(soup))
-        print(name)
-        r = requests.get(url)
-        soup = BeautifulSoup(r.text, 'html.parser')
-
-data = {'link': [links], 'names': [name]}
+data = {'link': links, 'names': names}
 df = pd.DataFrame(data)
-print(df)
+df.to_csv("Maven.csv")
